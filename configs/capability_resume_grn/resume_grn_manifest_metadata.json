@@ -1,0 +1,23 @@
+{
+  "small": {
+    "source_manifest": "/Users/sanchit/autoscilab/configs/capability_resume/small_grn_full.json",
+    "source_root": "/Users/sanchit/autoscilab/results/qwen_capability_resume_20260428_from_chem",
+    "grn_total": 18,
+    "grn_completed": 6,
+    "grn_remaining": 12
+  },
+  "medium": {
+    "source_manifest": "/Users/sanchit/autoscilab/configs/capability_resume/medium_grn_full.json",
+    "source_root": "/Users/sanchit/autoscilab/results/qwen_capability_resume_20260428_from_chem",
+    "grn_total": 18,
+    "grn_completed": 6,
+    "grn_remaining": 12
+  },
+  "large": {
+    "source_manifest": "/Users/sanchit/autoscilab/configs/capability_resume/large_grn_full.json",
+    "source_root": "/Users/sanchit/autoscilab/results/qwen_capability_resume_20260428_from_chem",
+    "grn_total": 18,
+    "grn_completed": 14,
+    "grn_remaining": 4
+  }
+}

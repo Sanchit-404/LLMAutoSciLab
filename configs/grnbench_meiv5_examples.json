@@ -1,0 +1,42 @@
+[
+  {
+    "id": "grn_ex1_chain_easy",
+    "domain": "g0_activation_chain",
+    "difficulty": "easy",
+    "law_version": "v0",
+    "budget": 20,
+    "notes": "Canonical activation chain sanity check."
+  },
+  {
+    "id": "grn_ex2_coherent_ffl_medium",
+    "domain": "g1_coherent_feedforward",
+    "difficulty": "medium",
+    "law_version": "v0",
+    "budget": 20,
+    "notes": "Direct-plus-mediated activation motif."
+  },
+  {
+    "id": "grn_ex3_incoherent_ffl_medium",
+    "domain": "g2_incoherent_feedforward",
+    "difficulty": "medium",
+    "law_version": "v1",
+    "budget": 20,
+    "notes": "Activation with mediated repression."
+  },
+  {
+    "id": "grn_ex4_feedback_hard",
+    "domain": "g3_negative_feedback",
+    "difficulty": "hard",
+    "law_version": "v0",
+    "budget": 20,
+    "notes": "Feedback-heavy case to test discrimination under stronger nonlinearity."
+  },
+  {
+    "id": "grn_ex5_toggle_medium",
+    "domain": "g4_toggle_switch",
+    "difficulty": "medium",
+    "law_version": "v2",
+    "budget": 20,
+    "notes": "Competing-branch / switch-like behavior."
+  }
+]

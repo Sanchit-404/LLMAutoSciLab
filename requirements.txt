@@ -1,0 +1,14 @@
+numpy>=1.26
+scipy>=1.11
+scikit-learn>=1.4
+pandas>=2.2
+pydantic>=2.7
+python-dotenv>=1.0
+sympy>=1.12
+matplotlib>=3.8
+rich>=13.7
+typer>=0.12
+networkx>=3.3
+openai>=1.30
+together>=1.2
+pysr>=0.18

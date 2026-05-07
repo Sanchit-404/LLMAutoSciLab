@@ -1,0 +1,74 @@
+[
+  {
+    "id": "c23_pingpong_arrhenius__easy__v0",
+    "domain": "c23_pingpong_arrhenius",
+    "difficulty": "easy",
+    "law_version": "v0"
+  },
+  {
+    "id": "c25_pingpong_competitive__easy__v0",
+    "domain": "c25_pingpong_competitive",
+    "difficulty": "easy",
+    "law_version": "v0"
+  },
+  {
+    "id": "c2_product_inhibition__easy__v0",
+    "domain": "c2_product_inhibition",
+    "difficulty": "easy",
+    "law_version": "v0"
+  },
+  {
+    "id": "c3_arrhenius_temperature__easy__v0",
+    "domain": "c3_arrhenius_temperature",
+    "difficulty": "easy",
+    "law_version": "v0"
+  },
+  {
+    "id": "c5_pingpong_bisubstrate__easy__v0",
+    "domain": "c5_pingpong_bisubstrate",
+    "difficulty": "easy",
+    "law_version": "v0"
+  },
+  {
+    "id": "c65_ordered_bi_bi__easy__v0",
+    "domain": "c65_ordered_bi_bi",
+    "difficulty": "easy",
+    "law_version": "v0"
+  },
+  {
+    "id": "c67_allosteric_act__easy__v0",
+    "domain": "c67_allosteric_act",
+    "difficulty": "easy",
+    "law_version": "v0"
+  },
+  {
+    "id": "c68_anticoop_hill__easy__v0",
+    "domain": "c68_anticoop_hill",
+    "difficulty": "easy",
+    "law_version": "v0"
+  },
+  {
+    "id": "c69_fractal_kinetics__easy__v0",
+    "domain": "c69_fractal_kinetics",
+    "difficulty": "easy",
+    "law_version": "v0"
+  },
+  {
+    "id": "c6_uncompetitive_inhibition__easy__v0",
+    "domain": "c6_uncompetitive_inhibition",
+    "difficulty": "easy",
+    "law_version": "v0"
+  },
+  {
+    "id": "c70_mixed_inhibition__easy__v0",
+    "domain": "c70_mixed_inhibition",
+    "difficulty": "easy",
+    "law_version": "v0"
+  },
+  {
+    "id": "c71_coop_inhibition__easy__v0",
+    "domain": "c71_coop_inhibition",
+    "difficulty": "easy",
+    "law_version": "v0"
+  }
+]
