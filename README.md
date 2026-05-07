@@ -10,7 +10,7 @@ The packaged tree includes:
 
 - `autoscilab/`: method, loops, acquisition, and oracle implementations
 - `configs/`: fixed manifests used by the benchmark runners
-- `NewtonBench/`: local Newton benchmark assets required by the Newton oracle
+- `newtonbench_vendor/`: minimal vendored Newton benchmark modules required by the Newton oracle
 - `scripts/`: benchmark entry points plus a convenience launcher
 
 ## Environment
@@ -86,7 +86,7 @@ python scripts/run_grn_prompt_budget.py \
 
 ## Notes
 
-- The Newton oracle expects the bundled `NewtonBench/` directory to remain adjacent to `autoscilab/`.
+- The Newton oracle expects the bundled `newtonbench_vendor/` directory to remain adjacent to `autoscilab/`.
 - The packaged ChemBench default path runs without requiring a local ensemble server. The `--ensemble-url` flag only matters if you explicitly enable or adapt an ensemble-backed configuration.
 - Results are written as JSON summaries in benchmark-specific subdirectories under `results/`.
 

@@ -16,8 +16,8 @@ from autoscilab.oracle.external import (
     build_summit_oracle,
 )
 
-# Path to the cloned NewtonBench repo (sibling of this package)
-_DEFAULT_NB_PATH = Path(__file__).parent.parent.parent / "NewtonBench"
+# Path to the minimal vendored NewtonBench module bundle (sibling of this package)
+_DEFAULT_NB_PATH = Path(__file__).parent.parent.parent / "newtonbench_vendor"
 
 # Registry: domain_id → configuration
 # kwarg_keys: the kwarg names the module expects (for kwargs-based modules)
