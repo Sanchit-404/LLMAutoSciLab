@@ -14,11 +14,11 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from dotenv import load_dotenv
 
-from autoscilab.grn_mei_v5_experiments.loop import GRNMEIGraphConfig, GRNMEIGraphLoop
+from autoscilab.grn_autoscilab.loop import GRNMEIGraphConfig, GRNMEIGraphLoop
 from autoscilab.oracle.grnbench import GRNBenchOracle
 
 ROOT = Path(__file__).parent.parent
-DEFAULT_EXAMPLES_FILE = ROOT / "configs" / "grnbench_meiv5_examples.json"
+DEFAULT_EXAMPLES_FILE = ROOT / "configs" / "grnbench_llm_autoscilab_examples.json"
 
 
 def _load_examples(path: Path) -> list[dict]:
@@ -97,7 +97,7 @@ def _run_one(example: dict, args: argparse.Namespace, out_dir: Path) -> dict:
             "best_graph": result.best_graph,
             "final_graph_eval": result.final_evaluation,
         }
-        (run_dir / "meiv5_graph_summary.json").write_text(json.dumps(payload, indent=2))
+        (run_dir / "llm_autoscilab_graph_summary.json").write_text(json.dumps(payload, indent=2))
         return payload
     except Exception as exc:
         tb = traceback.format_exc()
@@ -124,7 +124,7 @@ def main() -> None:
     # and only backfill missing variables from .env.
     load_dotenv(override=False)
 
-    parser = argparse.ArgumentParser(description="Run MEIv5-style GRN graph discovery on examples.")
+    parser = argparse.ArgumentParser(description="Run LLM-AutoSciLab GRN graph discovery on examples.")
     parser.add_argument("--examples-file", default=str(DEFAULT_EXAMPLES_FILE))
     parser.add_argument("--workers", type=int, default=5)
     parser.add_argument("--budget", type=int, default=None)
@@ -154,11 +154,11 @@ def main() -> None:
 
     examples = _load_examples(Path(args.examples_file))
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    out_dir = Path(args.out_dir) if args.out_dir else ROOT / "results" / f"grn_mei_v5_graph_{timestamp}"
+    out_dir = Path(args.out_dir) if args.out_dir else ROOT / "results" / f"grn_llm_autoscilab_{timestamp}"
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    print(f"[GRN-MEI-Graph] Running {len(examples)} examples with workers={args.workers}")
-    print(f"[GRN-MEI-Graph] Output: {out_dir}")
+    print(f"[GRN-LLM-AutoSciLab] Running {len(examples)} examples with workers={args.workers}")
+    print(f"[GRN-LLM-AutoSciLab] Output: {out_dir}")
 
     rows: list[dict] = []
     if args.workers <= 1:
@@ -188,7 +188,7 @@ def main() -> None:
                     "traceback": tb,
                 }
             rows.append(row)
-            print(f"[GRN-MEI-Graph] {row['example_id']}: {row['status']}")
+            print(f"[GRN-LLM-AutoSciLab] {row['example_id']}: {row['status']}")
     else:
         with ProcessPoolExecutor(max_workers=args.workers) as pool:
             futures = {pool.submit(_run_one, ex, args, out_dir): ex for ex in examples}
@@ -219,11 +219,11 @@ def main() -> None:
                         "traceback": tb,
                     }
                 rows.append(row)
-                print(f"[GRN-MEI-Graph] {row['example_id']}: {row['status']}")
+                print(f"[GRN-LLM-AutoSciLab] {row['example_id']}: {row['status']}")
 
     summary_path = out_dir / "summary.json"
     summary_path.write_text(json.dumps(rows, indent=2))
-    print(f"[GRN-MEI-Graph] Saved summary to {summary_path}")
+    print(f"[GRN-LLM-AutoSciLab] Saved summary to {summary_path}")
 
 
 if __name__ == "__main__":

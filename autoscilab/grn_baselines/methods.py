@@ -20,7 +20,7 @@ from autoscilab.al.gp_model import GPSurrogate
 from autoscilab.al.selector import ALSelector
 from autoscilab.data.store import ExperimentStore
 from autoscilab.grn.graph_search import search_graph_hypotheses
-from autoscilab.grn_mei_v5.loop import GRNMEIGraphConfig, GRNMEIGraphLoop
+from autoscilab.grn_autoscilab.loop import GRNMEIGraphConfig, GRNMEIGraphLoop
 from autoscilab.oracle.grnbench import GRNBenchOracle, GRN_GRAPH_NODES, GRN_INPUT_BOUNDS, GRN_INPUT_VARS
 
 STATE_NODES = ["A", "B", "C", "R"]

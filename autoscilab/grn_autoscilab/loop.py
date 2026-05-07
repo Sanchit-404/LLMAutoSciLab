@@ -11,13 +11,13 @@ import numpy as np
 from autoscilab.al.gp_model import GPSurrogate
 from autoscilab.al.selector import ALSelector
 from autoscilab.data.store import ExperimentStore
-from autoscilab.grn_mei_v5.graph_search import (
+from autoscilab.grn_autoscilab.graph_search import (
     GraphHypothesisFit,
     GraphHypothesisLineage,
     build_hypothesis_lineages,
     select_committee_from_lineages,
 )
-from autoscilab.grn_mei_v5.schemas import (
+from autoscilab.grn_autoscilab.schemas import (
     GraphTranslationProposal,
     HypothesisReasoningProposal,
     SingleGraphTranslationProposal,
@@ -98,6 +98,7 @@ class GRNMEIGraphConfig:
     complexity_penalty: float = 0.0
     bic_penalty_scale: float = 0.0
     max_llm_retry_attempts: int = 3
+    experiment_mode: str = "baseline"
     results_dir: Path = Path("results/")
     seed: int = 0
 
@@ -191,12 +192,22 @@ def _build_reasoning_prompt(
     lineage_summary: str,
     budget_remaining: int,
 ) -> str:
+    extra = ""
+    if cfg.experiment_mode == "prompt":
+        extra = (
+            "HYPOTHESIS DIVERSITY REQUIREMENT:\n"
+            "- Include at least one direct shortcut explanation (for example, signal/A acts on C directly).\n"
+            "- Include at least one mediated explanation with an intermediate node between signal and C.\n"
+            "- Include at least one feedback or repressor-based explanation when plausible from the data.\n"
+            "- Explicitly name which perturbations would discriminate direct vs mediated vs feedback explanations.\n\n"
+        )
     return (
         f"GOAL:\n{cfg.goal}\n\n"
         f"DOMAIN:\n{oracle.param_description}\n\n"
         f"CURRENT BEST HYPOTHESIS:\n{current_hypothesis}\n\n"
         f"RECENT DATA:\n{_store_to_table(store, max_rows=25)}\n\n"
         f"HYPOTHESIS FIT SUMMARY:\n{lineage_summary}\n\n"
+        f"{extra}"
         f"BUDGET REMAINING: {budget_remaining}\n"
         f"MAX EXPERIMENTS THIS ITERATION: {cfg.max_experiments_per_iter}\n\n"
         "Return:\n"
@@ -281,6 +292,45 @@ def _sample_region(bounds: dict[str, list[float]], n: int, rng: np.random.Genera
     return X
 
 
+def _probe_candidates(region_bounds: dict[str, list[float]]) -> np.ndarray:
+    mids = {param: float(np.sqrt(bounds[0] * bounds[1])) for param, bounds in region_bounds.items()}
+    los = {param: float(bounds[0]) for param, bounds in region_bounds.items()}
+    his = {param: float(bounds[1]) for param, bounds in region_bounds.items()}
+    candidates: list[dict[str, float]] = []
+    base = {param: mids[param] for param in GRN_INPUT_VARS}
+    candidates.append(base)
+    signal_levels = [los["signal"], mids["signal"], his["signal"]]
+    for signal in signal_levels:
+        for node in ("pert_A", "pert_B", "pert_C", "pert_R"):
+            low = dict(base)
+            low["signal"] = signal
+            low[node] = los[node]
+            candidates.append(low)
+            high = dict(base)
+            high["signal"] = signal
+            high[node] = his[node]
+            candidates.append(high)
+    pair_tests = [
+        ("pert_A", "pert_B"),
+        ("pert_A", "pert_C"),
+        ("pert_B", "pert_C"),
+        ("pert_R", "pert_C"),
+    ]
+    for a, b in pair_tests:
+        pt = dict(base)
+        pt["signal"] = his["signal"]
+        pt[a] = los[a]
+        pt[b] = his[b]
+        candidates.append(pt)
+        pt = dict(base)
+        pt["signal"] = his["signal"]
+        pt[a] = his[a]
+        pt[b] = los[b]
+        candidates.append(pt)
+    X = np.array([[cand[param] for param in GRN_INPUT_VARS] for cand in candidates], dtype=float)
+    return np.unique(X, axis=0)
+
+
 def _select_graph_disagreement_points(
     fits: list[GraphHypothesisFit],
     region_bounds: dict[str, list[float]],
@@ -288,8 +338,12 @@ def _select_graph_disagreement_points(
     candidate_pool_size: int,
     diversity_weight: float,
     rng: np.random.Generator,
+    use_probe_candidates: bool = False,
 ) -> list[dict[str, float]]:
     X = _sample_region(region_bounds, candidate_pool_size, rng)
+    if use_probe_candidates:
+        probes = _probe_candidates(region_bounds)
+        X = np.vstack([X, probes])
     pred_logs = []
     for fit in fits:
         y_hat = np.maximum(fit.predict(X), 1e-9)
@@ -510,6 +564,7 @@ class GRNMEIGraphLoop:
             candidate_pool_size=self._cfg.candidate_pool_size,
             diversity_weight=self._cfg.diversity_weight,
             rng=self._rng,
+            use_probe_candidates=self._cfg.experiment_mode == "acquisition",
         )
 
     def _select_points_with_llm_retries(

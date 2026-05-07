@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 from run_chembench_comparison import run_llm_pipeline
 
 ROOT = Path(__file__).parent.parent
-DEFAULT_MANIFEST = ROOT / 'configs' / 'noise_studies' / 'chembench_meiv5_noise27.json'
+DEFAULT_MANIFEST = ROOT / 'configs' / 'noise_studies' / 'chembench_llm_autoscilab_noise27.json'
 
 
 def _load_manifest(path: Path, limit: int | None = None) -> list[dict]:
@@ -79,7 +79,7 @@ def _aggregate(rows: list[dict]) -> dict:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description='Run ChemBench MEIv5 budget study on a fixed manifest.')
+    parser = argparse.ArgumentParser(description='Run ChemBench LLM-AutoSciLab budget study on a fixed manifest.')
     parser.add_argument('--manifest', type=Path, default=DEFAULT_MANIFEST)
     parser.add_argument('--budgets', type=int, nargs='+', default=[40, 60, 80])
     parser.add_argument('--workers', type=int, default=8)
@@ -94,7 +94,7 @@ def main() -> None:
 
     tasks = _load_manifest(args.manifest, args.limit)
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    out_dir = args.out_dir or ROOT / 'results' / f'chembench_meiv5_budget_{timestamp}'
+    out_dir = args.out_dir or ROOT / 'results' / f'chembench_llm_autoscilab_budget_{timestamp}'
     out_dir.mkdir(parents=True, exist_ok=True)
 
     all_rows = []

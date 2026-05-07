@@ -12,8 +12,8 @@ ROOT = Path(__file__).resolve().parent.parent
 
 def _runner(name: str) -> Path:
     mapping = {
-        "newton": ROOT / "scripts" / "run_newton_meiv5_budget.py",
-        "chem": ROOT / "scripts" / "run_chembench_meiv5_budget.py",
+        "newton": ROOT / "scripts" / "run_newton_llm_autoscilab_budget.py",
+        "chem": ROOT / "scripts" / "run_chembench_llm_autoscilab_budget.py",
         "grn": ROOT / "scripts" / "run_grn_prompt_budget.py",
     }
     return mapping[name]

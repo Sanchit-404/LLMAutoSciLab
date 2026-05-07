@@ -15,7 +15,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from run_paper_sweep import run_one as run_newton_one
 
 ROOT = Path(__file__).parent.parent
-DEFAULT_MANIFEST = ROOT / 'configs' / 'noise_studies' / 'newtonbench_meiv5_noise108.json'
+DEFAULT_MANIFEST = ROOT / 'configs' / 'noise_studies' / 'newtonbench_llm_autoscilab_noise108.json'
 
 
 def _load_manifest(path: Path, limit: int | None = None) -> list[dict]:
@@ -32,7 +32,7 @@ def _normalize(row: dict, task: dict, budget: int) -> dict:
         'seed': task['seed'],
         'budget': budget,
         'noise': 0.0,
-        'method': 'meiv5_newton',
+        'method': 'llm_autoscilab_newton',
         'status': row.get('status'),
         'gt_rmsle': row.get('gt_rmsle'),
         'exact_accuracy': row.get('exact_accuracy'),
@@ -62,7 +62,7 @@ def _aggregate(rows: list[dict]) -> dict:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description='Run NewtonBench MEIv5 budget study on a fixed manifest.')
+    parser = argparse.ArgumentParser(description='Run NewtonBench LLM-AutoSciLab budget study on a fixed manifest.')
     parser.add_argument('--manifest', type=Path, default=DEFAULT_MANIFEST)
     parser.add_argument('--budgets', type=int, nargs='+', default=[10, 20, 50])
     parser.add_argument('--workers', type=int, default=8)
@@ -75,7 +75,7 @@ def main() -> None:
 
     tasks = _load_manifest(args.manifest, args.limit)
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    out_dir = args.out_dir or ROOT / 'results' / f'newton_meiv5_budget_{timestamp}'
+    out_dir = args.out_dir or ROOT / 'results' / f'newton_llm_autoscilab_budget_{timestamp}'
     out_dir.mkdir(parents=True, exist_ok=True)
 
     all_rows: list[dict] = []
@@ -131,7 +131,7 @@ def main() -> None:
         all_rows.extend(rows)
 
     root_summary = {
-        'benchmark': 'newtonbench', 'method': 'meiv5_newton', 'model': args.model,
+        'benchmark': 'newtonbench', 'method': 'llm_autoscilab_newton', 'model': args.model,
         'manifest': str(args.manifest), 'budgets': args.budgets, 'workers': args.workers,
         'by_budget': by_budget,
     }

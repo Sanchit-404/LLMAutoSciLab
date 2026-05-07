@@ -60,7 +60,7 @@ python scripts/run_all_benchmarks.py --benchmark grn --workers 1
 Newton:
 
 ```bash
-python scripts/run_newton_meiv5_budget.py \
+python scripts/run_newton_llm_autoscilab_budget.py \
   --model gpt-4o-mini \
   --budgets 10 20 50 \
   --workers 4
@@ -69,7 +69,7 @@ python scripts/run_newton_meiv5_budget.py \
 Chem:
 
 ```bash
-python scripts/run_chembench_meiv5_budget.py \
+python scripts/run_chembench_llm_autoscilab_budget.py \
   --main-model gpt-4o-mini \
   --budgets 40 60 80 \
   --workers 4
@@ -95,8 +95,8 @@ python scripts/run_grn_prompt_budget.py \
 The packaged runners were smoke-tested from this release tree by checking the CLI entry points and the wrapper launcher:
 
 ```bash
-python scripts/run_newton_meiv5_budget.py --help
-python scripts/run_chembench_meiv5_budget.py --help
+python scripts/run_newton_llm_autoscilab_budget.py --help
+python scripts/run_chembench_llm_autoscilab_budget.py --help
 python scripts/run_grn_prompt_budget.py --help
 python scripts/run_all_benchmarks.py --help
 ```

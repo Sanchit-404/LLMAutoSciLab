@@ -11,7 +11,7 @@ from statistics import mean
 
 ROOT = Path(__file__).parent.parent
 DEFAULT_EXAMPLES = ROOT / 'configs' / 'noise_studies' / 'grnbench_prompt_noise18.json'
-EXPERIMENT_RUNNER = ROOT / 'scripts' / 'run_mei_v5_grn_graph_examples_experiments.py'
+EXPERIMENT_RUNNER = ROOT / 'scripts' / 'run_llm_autoscilab_grn_graph_examples.py'
 
 
 def _load_examples(path: Path, limit: int | None = None) -> list[dict]:
@@ -76,7 +76,7 @@ def main() -> None:
         for row in rows:
             row['budget'] = budget
             row['noise'] = 0.0
-            row['method'] = 'llm_mei_prompt'
+            row['method'] = 'llm_autoscilab_grn'
         (budget_dir / 'summary.json').write_text(json.dumps(rows, indent=2))
         agg = _aggregate(rows)
         by_budget[str(budget)] = agg
@@ -84,7 +84,7 @@ def main() -> None:
         all_rows.extend(rows)
 
     root_summary = {
-        'benchmark': 'grnbench', 'method': 'llm_mei_prompt', 'model': args.main_model,
+        'benchmark': 'grnbench', 'method': 'llm_autoscilab_grn', 'model': args.main_model,
         'manifest': str(args.examples_file), 'budgets': args.budgets, 'workers': args.workers,
         'by_budget': by_budget,
     }
