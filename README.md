@@ -1,4 +1,4 @@
-# LLM-AutoSciLab Paper Release
+# LLM-AutoSciLab 
 
 This release contains the minimal code needed to run the paper's three benchmark families with our method:
 
